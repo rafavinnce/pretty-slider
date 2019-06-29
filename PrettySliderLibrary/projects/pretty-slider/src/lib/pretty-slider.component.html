@@ -1,0 +1,38 @@
+<div class="e-slider" #dragMain>
+  <div class="e-slider-track"></div>
+  <div class="e-handle e-handle-first" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="dragMoved($event, 1)" (mousedown)="onMouseDown($event)" #dragStart>
+    <div class="e-tooltip-wrap">
+      <div class="e-tip-content"></div>
+      <div class="e-arrow-tip">
+        <div class="e-tip-bottom"></div>
+      </div>
+    </div>
+  </div>
+  <div class="e-handle e-handle-second" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="dragMoved($event, 2)" (mousedown)="onMouseDown($event)" #dragEnd>
+    <div class="e-tooltip-wrap">
+      <div class="e-tip-content"></div>
+      <div class="e-arrow-tip">
+        <div class="e-tip-bottom"></div>
+      </div>
+    </div>
+  </div>
+  <div class="e-range"></div>
+  <ul class="e-scale" aria-hidden="true">
+    <li class="e-tick e-first-tick" tabindex="-1" aria-hidden="true" title="00:00 AM" style="width: 24.7%;">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true">00:01 AM</span>
+    </li>
+    <li class="e-tick" tabindex="-1" aria-hidden="true" title="00:00 AM" style="width: 24.7%;">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true">06:00 AM</span>
+    </li>
+    <li class="e-tick" tabindex="-1" aria-hidden="true" title="00:00 AM" style="width: 24.7%;">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true">12:00 AM</span>
+    </li>
+    <li class="e-tick" tabindex="-1" aria-hidden="true" title="00:00 AM" style="width: 24.7%;">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true">18:00 PM</span>
+    </li>
+    <li class="e-tick e-last-tick" tabindex="-1" aria-hidden="true" title="00:00 AM" style="width: 1%;">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true">23:59 PM</span>
+    </li>
+  </ul>
+  <input type="hidden" value="0,0" name="time" class="e-slider-input" tabindex="-1">
+</div>
