@@ -8,21 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'PrettySliderLibrary';
 
-  // grade = 0;
-  // maxRating = 5;
-  // showRatingCounter = true;
-  // myRating: number;
-
   onDragMoved(object: any) {
     console.log(object);
   }
-
-  onDragMouse(object: any) {
-    console.log(object);
-  }
-  // selectedRating(rate: number) {
-  //   console.log('your rating is');
-  //   console.log(rate);
-  //   this.myRating = rate;
-  // }
 }
