@@ -175,7 +175,8 @@ $color-blue: #0069ff;
       margin: 0;
       outline: 0 none;
       padding: 0;
-      position: absolute;
+      //position: absolute;
+      position: relative;
       top: calc(50% - 14px);
       width: 100%;
       z-index: 1;
@@ -196,7 +197,8 @@ $color-blue: #0069ff;
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFElEQVQI12NkYGAIZ2BgYGBigAIABPgAW+yfXroAAAAASUVORK5CYII=");
         cursor: default;
         outline: none;
-        position: relative;
+        //position: relative;
+        position: absolute;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -214,7 +216,7 @@ $color-blue: #0069ff;
           background-position-x: right;
           .e-tick-value {
             right: 0;
-            left: inherit;
+            left: 0;
           }
         }
 
@@ -231,7 +233,7 @@ $color-blue: #0069ff;
           -ms-user-select: none;
           user-select: none;
           white-space: nowrap;
-          left: -22px;
+          left: 0;
         }
       }
     }

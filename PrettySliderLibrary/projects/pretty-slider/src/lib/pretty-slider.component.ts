@@ -7,6 +7,7 @@ import * as moment from 'moment-timezone';
   styleUrls: ['./pretty-slider.component.scss']
 })
 export class PrettySliderComponent implements OnInit {
+  @Input() steps: number;
 
   interval: number;
   dayToTimestamp: number;
@@ -14,26 +15,31 @@ export class PrettySliderComponent implements OnInit {
   timeEnd: number;
   formatedTimeStart: string;
   formatedTimeEnd: string;
+  compileSteps: any = [];
 
   @ViewChild('dragStart') dragStart: any;
   @ViewChild('dragEnd') dragEnd: any;
   @ViewChild('dragMain') dragMain: any;
 
+  @Output() dragMoved: EventEmitter<any> = new EventEmitter<any>();
+
   constructor() {
     this.setWrapInterval(5);
     this.setDayToTimestamp();
   }
-  @Input() steps: number;
 
-  allMouseUp() {}
-
-  allMouseLeave() {}
-
-  dragMoved(obj, item) {
+  triggerDragMoved(obj, item) {
     (item === 1) ? this.bindStart() : this.bindEnd();
-  }
-
-  onMouseDown(event) {
+    this.dragMoved.emit({
+        timeStart: {
+          time: this.getTimeStart(),
+          formated: this.getFormatedTime(this.getTimeStart())
+        },
+        timeEnd: {
+          time: this.getTimeEnd(),
+          formated: this.getFormatedTime(this.getTimeEnd())
+        }
+      });
   }
 
   bindStart() {
@@ -98,8 +104,16 @@ export class PrettySliderComponent implements OnInit {
     this.timeStart = time;
   }
 
+  getTimeStart() {
+    return this.timeStart ? this.timeStart : 0;
+  }
+
   setTimeEnd(time) {
     this.timeEnd = time;
+  }
+
+  getTimeEnd() {
+    return this.timeEnd ? this.timeEnd : 0;
   }
 
   setFormatedTime(element, time, elementHTMLarget) {
@@ -107,13 +121,22 @@ export class PrettySliderComponent implements OnInit {
     elementHTMLarget.nativeElement.querySelector('.e-tip-content').innerHTML = time;
   }
 
-  getFormatedTimeStart() {
-    return this.formatedTimeStart;
+  buildSteps() {
+    for (let i = 0; i < this.steps && this.steps <= 10 ? this.steps : 0; i++) {
+      const percent = ( (100 * i) / this.steps );
+      const time = this.getBindTime(percent);
+      const finalStepsCount = (this.steps <= 10) ? this.steps : 10;
+
+      this.compileSteps.push({
+        percentValue: percent,
+        timeValue: time,
+        widthValue: (this.getMainWidth() / finalStepsCount) + 'px',
+        timeLabel: this.getFormatedTime(time)
+      });
+    }
   }
 
-  getFormatedTimeEnd() {
-    return this.formatedTimeEnd;
+  ngOnInit() {
+    this.buildSteps();
   }
-
-  ngOnInit() {}
 }
