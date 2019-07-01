@@ -8,6 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'PrettySliderLibrary';
 
+  public steps: number = 10;
+  public tooltips: string = 'close';
+  public interval: number = 20;
+  public rangeValue: number[] = [14320, 80400];
+
   onDragMoved(object: any) {
     console.log(object);
   }

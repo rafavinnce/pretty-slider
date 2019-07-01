@@ -9,9 +9,12 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 For now, one component is added in this library
 ```html
 <pretty-slider 
-[steps]="10" 
-class="blue" 
-(dragMoved)="onDragMoved($event)"></pretty-slider>
+[steps]="steps" 
+[tooltips]="tooltips" 
+[value]="rangeValue" 
+[interval]="interval" 
+(dragMoved)="onDragMoved($event)" class="blue">
+</pretty-slider>
 ```
 
 # How to use?
@@ -41,7 +44,10 @@ export class AppModule { }
 ## To brief the signatures of the components as below
 
 1. ```[steps]``` - number of step ticks into slider bar. **steps** - hold the default value of step ticks (max: 10). | __type: *number*__
-2. ```(dragMoved)``` - This callback will be triggered when user drag and drop the slider items in the component.
+2. ```[value]``` - minimum and maximum initial value of selected interval. **value** - value in seconds from 00:00 to 23:59. If it is not set, the default value will be [0, 1200]. | __type: *array*__
+3. ```[tooltips]``` - define if tooltips open aways or not. **tooltips** - open | close __type: *string*__
+4. ```[interval]``` - sets minimum space (range) between tick handlers when moving the mouse. | __type: *number*__
+5. ```(dragMoved)``` - This callback will be triggered when user drag and drop the slider items in the component.
 
 # Sample implementation
 
@@ -76,7 +82,7 @@ export class AppModule { }
   <h1>
     Lets slide it!
   </h1>
-  <pretty-slider [steps]="10" class="blue" (dragMoved)="onDragMoved($event)"></pretty-slider>
+  <pretty-slider [steps]="steps" [tooltips]="tooltips" [value]="rangeValue" [interval]="interval" (dragMoved)="onDragMoved($event)" class="blue"></pretty-slider>
 </div>
 ```
 
@@ -91,7 +97,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  public steps: number = 10;
+  public tooltips: string = 'close';
+  public interval: number = 20;
+  public rangeValue: number[] = [14320, 80400];
+    
   onDragMoved(object: any) {
     console.log(object);
   }

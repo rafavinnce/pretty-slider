@@ -84,7 +84,6 @@ $color-blue: #0069ff;
       width: 12px;
       z-index: 10;
       position: absolute;
-      //margin-left: -6px;
       top: calc(50% - 6px);
       left: 0;
 
@@ -112,6 +111,10 @@ $color-blue: #0069ff;
         line-height: 27px;
         margin-left: -26px;
         display: none;
+
+        &.show-tooltip {
+          display: block;
+        }
 
         .e-tip-content {
           background-color: transparent;
@@ -163,7 +166,6 @@ $color-blue: #0069ff;
       top: calc(50% - 1px);
       border-radius: 2px;
       position: absolute;
-      transition: left 300ms ease-out, right 300ms ease-out, bottom 300ms ease-out, width 300ms ease-out, height 300ms ease-out;
     }
 
     .e-scale {
@@ -175,7 +177,6 @@ $color-blue: #0069ff;
       margin: 0;
       outline: 0 none;
       padding: 0;
-      //position: absolute;
       position: relative;
       top: calc(50% - 14px);
       width: 100%;
@@ -197,7 +198,6 @@ $color-blue: #0069ff;
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFElEQVQI12NkYGAIZ2BgYGBigAIABPgAW+yfXroAAAAASUVORK5CYII=");
         cursor: default;
         outline: none;
-        //position: relative;
         position: absolute;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -208,14 +208,6 @@ $color-blue: #0069ff;
         &.e-first-tick {
           background-position-x: left;
           .e-tick-value {
-            left: 0;
-          }
-        }
-
-        &.e-last-tick {
-          background-position-x: right;
-          .e-tick-value {
-            right: 0;
             left: 0;
           }
         }
@@ -234,6 +226,7 @@ $color-blue: #0069ff;
           user-select: none;
           white-space: nowrap;
           left: 0;
+          margin-left: -22px;
         }
       }
     }

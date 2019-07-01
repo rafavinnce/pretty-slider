@@ -17,9 +17,9 @@
     </div>
   </div>
   <div class="e-range"></div>
-  <ul class="e-scale" aria-hidden="true">
-    <li *ngFor="let step of compileSteps; first as isFirst; last as isLast" class="e-tick {{ isFirst ? 'e-first-tick' : isLast ? 'e-last-tick' : 'e-middle-tick' }}" tabindex="-1" aria-hidden="true" title="{{ step.timeLabel }}" [ngStyle]="{'width': step.widthValue, 'left': step.percentValue+'%' }">
-      <span class="e-tick-value" tabindex="-1" aria-hidden="true">{{ step.timeLabel }}</span>
+  <ul class="e-scale {{ compileSteps.length }}" aria-hidden="true">
+    <li *ngFor="let step of compileSteps; first as isFirst; last as isLast" class="e-tick {{ isFirst ? 'e-first-tick' : isLast ? 'e-last-tick' : 'e-middle-tick' }}" tabindex="-1" aria-hidden="true" title="{{ step.timeLabel }}" [ngStyle]="{ 'width': step.widthValue+'px', 'left': step.percentValue+'%' }">
+      <span class="e-tick-value" tabindex="-1" aria-hidden="true" [ngStyle]="{ 'margin-left': isLast ? '-'+(step.widthValue / 3) : '-22px'}">{{ step.timeLabel }}</span>
     </li>
   </ul>
   <input type="hidden" value="0,0" name="time" class="e-slider-input" tabindex="-1">
