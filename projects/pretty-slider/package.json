@@ -1,9 +1,35 @@
 {
   "name": "pretty-slider",
-  "version": "0.0.4",
+  "version": "0.0.5",
+  "description": "Simple and pretty highly customizable Angular slider.",
+  "author": "Rafael Milani Barbosa",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafaelmilanibarbosa/pretty-slider"
+  },
+  "bugs": {
+    "url": "https://github.com/rafaelmilanibarbosa/pretty-slider/issues"
+  },
+  "homepage": "https://github.com/rafaelmilanibarbosa/pretty-slider",
+  "keywords": [
+    "angular",
+    "typescript",
+    "javascript",
+    "drag-and-drop",
+    "slider",
+    "component",
+    "material-design",
+    "angular-material"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
+    "@angular/cdk": "^7.0.0",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.23"
+  },
+  "dependencies": {
     "@angular/cdk": "^7.0.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23"
