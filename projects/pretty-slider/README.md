@@ -48,7 +48,7 @@ export class AppModule { }
 2. ```[value]``` - minimum and maximum initial value of selected interval. **value** - value in seconds from 00:00 to 23:59. If it is not set, the default value will be [0, 1200]. | __type: *array*__
 3. ```[tooltips]``` - define if tooltips open aways or not. **tooltips** - open | close __type: *string*__
 4. ```[interval]``` - sets minimum space (range) between tick handlers when moving the mouse. | __type: *number*__
-5. ```[buttonLabel]``` - Label reset button. | __type: *string*__
+5. ```[buttonLabel]``` - Label reset button. | __type: *string|html*__
 6. ```(dragMoved)``` - This callback will be triggered when user drag and drop the slider items in the component.
 
 # Sample implementation

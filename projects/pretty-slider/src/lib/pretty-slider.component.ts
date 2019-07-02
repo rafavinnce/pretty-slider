@@ -277,6 +277,7 @@ export class PrettySliderComponent implements OnInit {
 
   setButtonLabel() {
     this.btnLabel = (this.buttonLabel !== '' && typeof this.buttonLabel !== 'undefined') ? this.buttonLabel : 'Reset';
+    this.resetButton.nativeElement.innerHTML = this.btnLabel;
   }
 
   resetRange() {
