@@ -148,10 +148,6 @@ $color-blue: #0069ff;
         }
       }
 
-      &.e-handle-second {
-       left: 78px;
-      }
-
       &.active {
        cursor: grabbing;
       }
@@ -230,5 +226,17 @@ $color-blue: #0069ff;
         }
       }
     }
+  }
+
+  .e-slider-btn-blue {
+    background: $color-blue;
+    color: white;
+    border: 1px solid $color-blue;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 30px;
+    outline: none;
+    cursor: pointer;
   }
 }

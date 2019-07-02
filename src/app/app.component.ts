@@ -10,8 +10,9 @@ export class AppComponent {
 
   public steps: number = 10;
   public tooltips: string = 'close';
-  public interval: number = 20;
+  public interval: number = 40;
   public rangeValue: number[] = [14320, 80400];
+  public buttonLabel: string = 'Resetar';
 
   onDragMoved(object: any) {
     console.log(object);

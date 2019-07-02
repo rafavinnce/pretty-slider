@@ -1,6 +1,6 @@
 <div class="e-slider" #dragMain>
   <div class="e-slider-track"></div>
-  <div class="e-handle e-handle-first" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 1)" #dragStart>
+  <div class="e-handle e-handle-first" id="sss" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 1)" #dragStart>
     <div class="e-tooltip-wrap">
       <div class="e-tip-content"></div>
       <div class="e-arrow-tip">
@@ -22,5 +22,6 @@
       <span class="e-tick-value" tabindex="-1" aria-hidden="true" [ngStyle]="{ 'margin-left': isLast ? '-'+(step.widthValue / 3) : '-22px'}">{{ step.timeLabel }}</span>
     </li>
   </ul>
-  <input type="hidden" value="0,0" name="time" class="e-slider-input" tabindex="-1">
+  <input type="hidden" [value]="inputValue" name="time" class="e-slider-input" tabindex="-1">
 </div>
+<button mat-flat-button color="primary" class="e-slider-btn-blue" #resetButton>{{ btnLabel }}</button>

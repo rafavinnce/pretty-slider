@@ -13,6 +13,7 @@ For now, one component is added in this library
 [tooltips]="tooltips" 
 [value]="rangeValue" 
 [interval]="interval" 
+[buttonLabel]="buttonLabel"
 (dragMoved)="onDragMoved($event)" class="blue">
 </pretty-slider>
 ```
@@ -47,7 +48,8 @@ export class AppModule { }
 2. ```[value]``` - minimum and maximum initial value of selected interval. **value** - value in seconds from 00:00 to 23:59. If it is not set, the default value will be [0, 1200]. | __type: *array*__
 3. ```[tooltips]``` - define if tooltips open aways or not. **tooltips** - open | close __type: *string*__
 4. ```[interval]``` - sets minimum space (range) between tick handlers when moving the mouse. | __type: *number*__
-5. ```(dragMoved)``` - This callback will be triggered when user drag and drop the slider items in the component.
+5. ```[buttonLabel]``` - Label reset button. | __type: *string*__
+6. ```(dragMoved)``` - This callback will be triggered when user drag and drop the slider items in the component.
 
 # Sample implementation
 
@@ -82,7 +84,7 @@ export class AppModule { }
   <h1>
     Lets slide it!
   </h1>
-  <pretty-slider [steps]="steps" [tooltips]="tooltips" [value]="rangeValue" [interval]="interval" (dragMoved)="onDragMoved($event)" class="blue"></pretty-slider>
+  <pretty-slider [steps]="steps" [tooltips]="tooltips" [value]="rangeValue" [interval]="interval" [buttonLabel]="buttonLabel" (dragMoved)="onDragMoved($event)" class="blue"></pretty-slider>
 </div>
 ```
 
@@ -101,6 +103,7 @@ export class AppComponent {
   public tooltips: string = 'close';
   public interval: number = 20;
   public rangeValue: number[] = [14320, 80400];
+  public buttonLabel: string = 'Reset';
     
   onDragMoved(object: any) {
     console.log(object);
