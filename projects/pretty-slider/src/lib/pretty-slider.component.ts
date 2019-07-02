@@ -36,6 +36,7 @@ export class PrettySliderComponent implements OnInit {
   @ViewChild('dragStart') dragStart: any;
   @ViewChild('dragEnd') dragEnd: any;
   @ViewChild('dragMain') dragMain: any;
+  @ViewChild('eRange') eRange: any;
   @ViewChild('resetButton') resetButton: any;
 
   @Output() dragMoved: EventEmitter<any> = new EventEmitter<any>();
@@ -166,6 +167,7 @@ export class PrettySliderComponent implements OnInit {
   }
 
   buildSteps() {
+    this.compileSteps.length = 0;
     for (let i = 0; i < this.getSteps() && this.getSteps() <= 10 ? this.getSteps() : 0; i++) {
       const percent = ( (100 * i) / this.getSteps() );
       this.handlerResults(i, percent);
@@ -220,7 +222,8 @@ export class PrettySliderComponent implements OnInit {
   }
 
   handleRangeBar(start, end) {
-    const rangeBar = (document.querySelector('.e-range') as HTMLElement);
+
+    const rangeBar = this.eRange.nativeElement;
     rangeBar.style.width = (end - start) + 'px';
     rangeBar.style.webkitTransform = 'translate3d('+start+'px,0px,0px)';
   }
@@ -229,8 +232,8 @@ export class PrettySliderComponent implements OnInit {
     this.setTimeStart(this.bindRange(range)[0]);
     this.setTimeEnd(this.bindRange(range)[1]);
 
-    const first = (document.querySelector('.e-handle-first') as HTMLElement);
-    const second = (document.querySelector('.e-handle-second') as HTMLElement);
+    const first = this.dragStart.nativeElement;
+    const second = this.dragEnd.nativeElement;
 
     this.setFormatedTime(this.formatedTimeStart, this.getFormatedTime(this.bindRange(range)[0]), this.dragStart);
     this.setFormatedTime(this.formatedTimeEnd, this.getFormatedTime(this.bindRange(range)[1]), this.dragEnd);
