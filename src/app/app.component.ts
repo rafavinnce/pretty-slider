@@ -12,7 +12,6 @@ export class AppComponent {
   public tooltips: string = 'close';
   public interval: number = 40;
   public rangeValue: number[] = [14320, 80400];
-  public buttonLabel: string = 'Resetar';
 
   onDragMoved(object: any) {
     console.log(object);

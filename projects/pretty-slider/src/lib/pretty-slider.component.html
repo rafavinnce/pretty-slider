@@ -1,6 +1,29 @@
+
+<!--<div class="draggg" style="position: relative;width: 100%;height: 50px; background: #F4f4f4;">-->
+  <!--<div class="dragitem" style="    background: #0069ff;-->
+    <!--border-radius: 50%;-->
+    <!--box-sizing: border-box;-->
+    <!--width: 12px;-->
+    <!--height: 12px;-->
+    <!--color: white;-->
+    <!--padding: 4px;-->
+    <!--position: absolute;-->
+    <!--left: 0%;" #dragElementStart>S</div>-->
+  <!--<div class="dragitem" style="    background: #0069ff;-->
+    <!--border-radius: 50%;-->
+    <!--box-sizing: border-box;-->
+    <!--width: 12px;-->
+    <!--height: 12px;-->
+    <!--color: white;-->
+    <!--padding: 4px;-->
+    <!--position: absolute;-->
+    <!--left: 30%;" #dragElementEnd>E</div>-->
+<!--</div>-->
+
 <div class="e-slider" #dragMain>
   <div class="e-slider-track"></div>
-  <div class="e-handle e-handle-first" id="sss" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 1)" #dragStart>
+
+  <div class="e-drag-item e-drag-item-start" #dragElementStart>
     <div class="e-tooltip-wrap">
       <div class="e-tip-content"></div>
       <div class="e-arrow-tip">
@@ -8,7 +31,8 @@
       </div>
     </div>
   </div>
-  <div class="e-handle e-handle-second" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 2)" #dragEnd>
+
+  <div class="e-drag-item e-drag-item-end" #dragElementEnd>
     <div class="e-tooltip-wrap">
       <div class="e-tip-content"></div>
       <div class="e-arrow-tip">
@@ -16,6 +40,25 @@
       </div>
     </div>
   </div>
+
+  <!--<div class="e-handle e-handle-first" id="sss" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 1)" #dragStart>-->
+    <!--<div class="e-tooltip-wrap">-->
+      <!--<div class="e-tip-content"></div>-->
+      <!--<div class="e-arrow-tip">-->
+        <!--<div class="e-tip-bottom"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="e-handle e-handle-second" cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".e-slider" (cdkDragMoved)="triggerDragMoved($event, 2)" #dragEnd>-->
+    <!--<div class="e-tooltip-wrap">-->
+      <!--<div class="e-tip-content"></div>-->
+      <!--<div class="e-arrow-tip">-->
+        <!--<div class="e-tip-bottom"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+
   <div class="e-range" #eRange></div>
   <ul class="e-scale {{ compileSteps.length }}" aria-hidden="true">
     <li *ngFor="let step of compileSteps; first as isFirst; last as isLast" class="e-tick {{ isFirst ? 'e-first-tick' : isLast ? 'e-last-tick' : 'e-middle-tick' }}" tabindex="-1" aria-hidden="true" title="{{ step.timeLabel }}" [ngStyle]="{ 'width': step.widthValue+'px', 'left': step.percentValue+'%' }">
@@ -24,4 +67,4 @@
   </ul>
   <input type="hidden" [value]="inputValue" name="time" class="e-slider-input" tabindex="-1">
 </div>
-<button mat-flat-button color="primary" class="e-slider-btn-blue" #resetButton>{{ btnLabel }}</button>
+<!--<button mat-flat-button color="primary" class="e-slider-btn-blue" #resetButton>{{ btnLabel }}</button>-->

@@ -13,6 +13,11 @@ export class PrettySliderComponent implements OnInit {
   @Input() interval: number;
   @Input() buttonLabel: string;
 
+  pos1 = 0;
+  pos2 = 0;
+  pos3 = 0;
+  pos4 = 0;
+
   dayToTimestamp: number;
   timeStart: number;
   timeEnd: number;
@@ -20,18 +25,8 @@ export class PrettySliderComponent implements OnInit {
   formatedTimeEnd: string;
   compileSteps: any = [];
 
-  rangeStart: number;
-  rangeEnd: number;
-  rangeFirstPX: number;
-  rangeEndPX: number;
-  defaultRange: any = [];
-
-  tmpCheckTimeStart: number;
-  tmpCheckTimeEnd: number;
-
-  htmlStart: any;
-  htmlEnd: any;
-  htmlMain: any;
+  @ViewChild('dragElementStart') dragElementStart: any;
+  @ViewChild('dragElementEnd') dragElementEnd: any;
 
   @ViewChild('dragStart') dragStart: any;
   @ViewChild('dragEnd') dragEnd: any;
@@ -47,57 +42,25 @@ export class PrettySliderComponent implements OnInit {
     this.setDayToTimestamp();
   }
 
-  triggerDragMoved(obj, item) {
-    (item === 1) ? this.bindStart() : this.bindEnd();
+  dragMovedCall() {
     this.dragMoved.emit({
-        timeStart: {
-          time: this.getTimeStart(),
-          formated: this.getFormatedTime(this.getTimeStart())
-        },
-        timeEnd: {
-          time: this.getTimeEnd(),
-          formated: this.getFormatedTime(this.getTimeEnd())
-        }
-      });
+      timeStart: {
+        time: this.getTimeStart(),
+        formated: this.getFormatedTime(this.getTimeStart())
+      },
+      timeEnd: {
+        time: this.getTimeEnd(),
+        formated: this.getFormatedTime(this.getTimeEnd())
+      }
+    });
   }
 
-  bindStart() {
-    const position = ( this.getTargetLeft() - this.getMainLeft());
-    const percentStart = this.getBindPercent(position);
-    const timeStart = this.getBindTime(percentStart);
-    if(this.checkInterval()) {
-      this.tmpCheckTimeStart = timeStart;
-      this.setTimeStart(timeStart);
-      this.setFormatedTime(this.formatedTimeStart, this.getFormatedTime(timeStart), this.dragStart);
-      this.setRange([timeStart, this.getTimeEnd()], this.getInterval());
-      this.inputValue = [timeStart, this.getTimeEnd()];
-    }
-    else {
-      this.inputValue = [this.tmpCheckTimeStart, this.getTimeEnd()];
-      this.setRange([this.tmpCheckTimeStart, this.getTimeEnd()], this.getInterval());
-    }
-  }
-
-  bindEnd() {
-    const position = ( this.getEndLeft() - this.getMainLeft());
-    const percentEnd = this.getBindPercent(position);
-    const timeEnd = this.getBindTime(percentEnd);
-
-    if(this.checkInterval()) {
-      this.tmpCheckTimeEnd = timeEnd;
-      this.setTimeEnd(timeEnd);
-      this.setFormatedTime(this.formatedTimeEnd, this.getFormatedTime(timeEnd), this.dragEnd);
-      this.setRange([this.getTimeStart(), timeEnd], this.getInterval());
-      this.inputValue = [this.getTimeStart(), timeEnd];
-    }
-    else {
-      this.inputValue = [this.getTimeStart(), this.tmpCheckTimeEnd];
-      this.setRange([this.getTimeStart(), this.tmpCheckTimeEnd], this.getInterval());
-    }
+  getInterval() {
+    return this.interval && this.interval >= 20 ? this.interval : 20;
   }
 
   setDayToTimestamp() {
-    this.dayToTimestamp = 86340;
+    this.dayToTimestamp = 86400;
   }
 
   getDayToTimestamp() {
@@ -105,29 +68,27 @@ export class PrettySliderComponent implements OnInit {
   }
 
   getBindPercent(position) {
-    return ( (100 * position) / this.getMainWidth() );
+    return ( (100 * position) / this.getMainOffsetWidth() );
   }
-  getTargetLeft() {
-    return this.dragStart.nativeElement.getClientRects()[0].left;
+
+  getStartLeft() {
+    return this.dragElementStart.nativeElement.offsetLeft;
   }
 
   getBindTime(percent) {
     return ( (this.getDayToTimestamp() * percent) / 100 );
   }
-  getMainLeft() {
-    return this.dragMain.nativeElement.getClientRects()[0].left;
+
+  getMainOffsetLeft() {
+    return this.dragMain.nativeElement.offsetLeft;
+  }
+
+  getMainOffsetWidth() {
+    return this.dragMain.nativeElement.offsetWidth;
   }
 
   getEndLeft() {
-    return this.dragEnd.nativeElement.getClientRects()[0].left;
-  }
-
-  getMainWidth() {
-    return (this.dragMain.nativeElement.clientWidth - this.getTargetWidth());
-  }
-
-  getTargetWidth() {
-    return this.dragStart.nativeElement.clientWidth;
+    return this.dragElementEnd.nativeElement.offsetLeft;
   }
 
   getFormatedTime(seconds) {
@@ -147,7 +108,7 @@ export class PrettySliderComponent implements OnInit {
   }
 
   getTimeEnd() {
-    return this.timeEnd ? this.timeEnd : 0;
+    return this.timeEnd ? this.timeEnd : 20;
   }
 
   setFormatedTime(element, time, elementHTMLarget) {
@@ -159,11 +120,11 @@ export class PrettySliderComponent implements OnInit {
     return (this.steps);
   }
 
-  handlerTooltips() {
-    const itens = document.querySelectorAll('.e-tooltip-wrap');
+  handlerTooltips(element) {
+    const items = element.nativeElement.querySelectorAll('.e-tooltip-wrap');
     (this.tooltips === 'open') ?
-      itens.forEach(function(userItem) { userItem.classList.add('show-tooltip') }) :
-      itens.forEach(function(userItem) { userItem.classList.remove('show-tooltip') });
+      items.forEach(function(userItem) { userItem.classList.add('show-tooltip') }) :
+      items.forEach(function(userItem) { userItem.classList.remove('show-tooltip') });
   }
 
   buildSteps() {
@@ -182,36 +143,9 @@ export class PrettySliderComponent implements OnInit {
     this.compileSteps.push({
       percentValue: percent,
       timeValue: time,
-      widthValue: (this.getMainWidth() / finalStepsCount),
+      widthValue: (this.getMainOffsetWidth() / finalStepsCount),
       timeLabel: this.getFormatedTime(time)
     });
-  }
-
-  handlerRangeStart() {
-    (typeof this.value === 'object' && typeof this.value !== 'undefined') ?
-      this.setAllStart() :
-      '';
-  }
-
-  setAllStart() {
-    this.setRange(this.value, this.interval);
-  }
-
-  getRangeStart() {
-    return this.rangeStart ? this.rangeStart : 0;
-  }
-
-  getRangeEnd() {
-    return this.rangeEnd ? this.rangeEnd : (20 * 60);
-  }
-
-  inputRanges(value) {
-    this.defaultRange = this.bindRange(value);
-    this.rangeStart = this.bindRange(value)[0];
-    this.rangeEnd = this.bindRange(value)[1];
-    this.inputValue = [this.bindRange(value)[0], this.bindRange(value)[1]];
-    this.tmpCheckTimeStart = this.bindRange(value)[0];
-    this.tmpCheckTimeEnd = this.bindRange(value)[1];
   }
 
   bindRange(value) {
@@ -221,91 +155,191 @@ export class PrettySliderComponent implements OnInit {
     return obj;
   }
 
-  handleRangeBar(start, end) {
-
+  handleRangeBar() {
     const rangeBar = this.eRange.nativeElement;
-    rangeBar.style.width = (end - start) + 'px';
-    rangeBar.style.webkitTransform = 'translate3d('+start+'px,0px,0px)';
-  }
-
-  setRange(range, interval) {
-    this.setTimeStart(this.bindRange(range)[0]);
-    this.setTimeEnd(this.bindRange(range)[1]);
-
-    const first = this.dragStart.nativeElement;
-    const second = this.dragEnd.nativeElement;
-
-    this.setFormatedTime(this.formatedTimeStart, this.getFormatedTime(this.bindRange(range)[0]), this.dragStart);
-    this.setFormatedTime(this.formatedTimeEnd, this.getFormatedTime(this.bindRange(range)[1]), this.dragEnd);
-
-    const firstRaggePercent = (100 * this.bindRange(range)[0]) / this.getDayToTimestamp();
-    const secondRaggePercent = (100 * this.bindRange(range)[1]) / this.getDayToTimestamp();
-
-    const rangeFirstPX = Math.floor((this.getMainWidth() * firstRaggePercent) / 100);
-    const rangeSecondPX = Math.floor((this.getMainWidth() * secondRaggePercent) / 100);
-    this.rangeFirstPX = rangeFirstPX;
-    this.rangeEndPX = rangeSecondPX;
-
-    this.rangeStart = this.bindRange(range)[0];
-    this.rangeEnd = this.bindRange(range)[1];
-
-    first.style.webkitTransform = 'translate3d('+rangeFirstPX+'px,0px,0px)';
-    second.style.webkitTransform = 'translate3d('+rangeSecondPX+'px,0px,0px)';
-    second.style.left = '0px';
-
-    this.handleRangeBar(this.rangeFirstPX, this.rangeEndPX);
-  }
-
-  getInterval() {
-    const interval = this.interval ? this.interval : 20;
-    return (interval * 60);
-  }
-
-  checkInterval() {
-    return ( (this.getRangeEnd() - this.getRangeStart()) >= this.getInterval() );
+    rangeBar.setAttribute('style', 'left:'+this.getStartLeft()+'px');
+    rangeBar.style.width = (this.getEndLeft() - this.getStartLeft()) + 'px';
   }
 
   setPositionInit(value, dragElement) {
     const percent = (100 * value) / this.getDayToTimestamp();
-    const rangePX = Math.floor((this.getMainWidth() * percent) / 100);
-    dragElement.nativeElement.setAttribute('style', 'transform: translate3d('+rangePX+'px,0px,0px)');
-    dragElement.nativeElement.setAttribute('style', '-webkit-transform: translate3d('+rangePX+'px,0px,0px)');
-    dragElement.nativeElement.setAttribute('style', '-ms-transform: translate3d('+rangePX+'px,0px,0px)');
-    dragElement.nativeElement.setAttribute('style', '-moz-transform: translate3d('+rangePX+'px,0px,0px)');
-    dragElement.nativeElement.setAttribute('style', '-o-transform: translate3d('+rangePX+'px,0px,0px)');
-  }
-
-  setButtonLabel() {
-    this.btnLabel = (this.buttonLabel !== '' && typeof this.buttonLabel !== 'undefined') ? this.buttonLabel : 'Reset';
-    this.resetButton.nativeElement.innerHTML = this.btnLabel;
-  }
-
-  resetRange() {
-    this.__init(this.defaultRange);
+    const halfWidth = ( dragElement.nativeElement.offsetWidth / 2 );
+    const rangePX = Math.floor((this.getMainOffsetWidth() * percent) / 100) - halfWidth;
+    dragElement.nativeElement.setAttribute('style', 'left:'+rangePX+'px');
   }
 
   __init(value) {
-    this.htmlStart = this.dragStart.nativeElement.innerHTML;
-    this.htmlEnd = this.dragEnd.nativeElement.innerHTML;
-    this.htmlMain = this.dragMain.nativeElement.innerHTML;
-
     this.setTimeStart(this.bindRange(value)[0]);
     this.setTimeEnd(this.bindRange(value)[1]);
-    this.setPositionInit(this.bindRange(value)[0], this.dragStart);
-    this.setPositionInit(this.bindRange(value)[1], this.dragEnd);
-    this.inputRanges(value);
-    this.bindStart();
-    this.bindEnd();
-    this.handlerRangeStart();
-    this.handlerTooltips();
+
+    this.setPositionInit(this.getTimeStart(), this.dragElementStart);
+    this.setPositionInit(this.getTimeEnd(), this.dragElementEnd);
+
+    this.handleRangeBar();
+
+    this.handlerTooltips(this.dragElementStart);
+    this.handlerTooltips(this.dragElementEnd);
+
     this.buildSteps();
-    this.setButtonLabel();
+    this.__setTime(this.getTimeStart(), this.getTimeEnd());
   }
+
+  dragmousedown (e, element, item) {
+    this.__activePointer(element);
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    document.onmouseup = (e) => {
+      this.closeDragElement(e, element);
+    };
+    // call a function whenever the cursor moves:
+    document.onmousemove = (e) => {
+      this.elementDrag(e, element, item);
+    }
+  }
+
+  closeDragElement(e, element) {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+    this._inactivePointer(element);
+  }
+
+  checkInterval(timeStart, timeEnd, interval, e, position, item) {
+    let ret = true;
+    const timeInterval = (interval * 60);
+    const mouseLeft =  (e.clientX - this.dragMain.nativeElement.getBoundingClientRect().left) - ( this.dragElementStart.nativeElement.offsetWidth / 2 );
+    const movementX = e.movementX ||
+      e.mozMovementX ||
+      e.webkitMovementX ||
+      0;
+
+    // determine the direction
+    let direction = 0;
+    if (movementX > 0) {
+      direction = 1;
+    } else if (movementX < 0) {
+      direction = -1;
+    }
+
+    if ((timeEnd - timeStart) >= timeInterval) {
+      ret = true;
+    }
+    else {
+      if(item === 1) {
+        if(direction == -1) {
+          if ((mouseLeft - position) < 2) {
+            ret = true;
+          } else {
+            ret = false;
+          }
+        } else if(direction == 1) {
+          ret = false;
+        } else if(direction == 0) {
+          ret = false;
+        }
+      }
+      else {
+        if (direction == 1) {
+          if((mouseLeft - position) > -2) {
+            ret = true;
+          } else {
+            ret = false;
+          }
+        }
+        else if(direction == 0) {
+          ret = false;
+        }
+        else if(direction == -1) {
+           ret = false;
+        }
+      }
+    }
+
+    return ret;
+  }
+  elementDrag(e, element, item) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    this.pos1 = this.pos3 - e.clientX;
+    this.pos2 = this.pos4 - e.clientY;
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+
+    const checkTargetBoundary = element.nativeElement.offsetLeft - this.pos1;
+    const startMainBoundary = this.getMainOffsetLeft() - ( element.nativeElement.offsetWidth / 2 );
+    const startMainWidthBoundary = this.getMainOffsetWidth() - ( element.nativeElement.offsetWidth / 2 );
+    const endMainBoundary = this.dragMain.nativeElement.getBoundingClientRect().left;
+    const endMainBoundaryCalc = (endMainBoundary + startMainWidthBoundary) + ( element.nativeElement.offsetWidth / 2 );
+
+    let act = true;
+    act = this.checkInterval(this.getTimeStart(), this.getTimeEnd(), this.getInterval(), e, (element.nativeElement.offsetLeft - this.pos1), item);
+
+    // set the element's new position:
+    (checkTargetBoundary >= startMainBoundary) ?
+      // validation and workaround mouse positions
+      (e.clientX >= element.nativeElement.getBoundingClientRect().left) ?
+        (checkTargetBoundary <= startMainWidthBoundary) ?
+          (e.clientX <= endMainBoundaryCalc) ?
+            (act === true) ?
+              this.__setElementLeft(element, (element.nativeElement.offsetLeft - this.pos1), item) :
+              '' :
+            '' :
+          '' :
+        '' :
+      this.__unsetElementDrag(element);
+
+    this.dragMovedCall();
+  }
+
+  __setTimeItem(element, position, item) {
+    const percent = this.getBindPercent(position + ( element.nativeElement.offsetWidth / 2 ));
+    const time = this.getBindTime(percent);
+
+    (item === 1) ?
+      this.__setTime(time, this.getTimeEnd()) :
+      this.__setTime(this.getTimeStart(), time);
+  }
+
+  __setTime(start, end) {
+    const range = [start, end];
+    this.inputValue = [start, end];
+    this.setTimeStart(this.bindRange(range)[0]);
+    this.setTimeEnd(this.bindRange(range)[1]);
+
+    this.setFormatedTime(this.formatedTimeStart, this.getFormatedTime(this.bindRange(range)[0]), this.dragElementStart);
+    this.setFormatedTime(this.formatedTimeEnd, this.getFormatedTime(this.bindRange(range)[1]), this.dragElementEnd);
+  }
+
+  __setElementLeft(element, pos, item) {
+    element.nativeElement.style.left = pos + "px";
+    this.handleRangeBar();
+    this.__setTimeItem(element, pos, item);
+  }
+
+  __unsetElementDrag(element) {
+    element.nativeElement.dispatchEvent(new Event('mouseup'));
+  }
+
+  __activePointer(element) {
+    element.nativeElement.classList.add('e-dragging');
+  }
+
+  _inactivePointer(element) {
+    element.nativeElement.classList.remove('e-dragging');
+  }
+
   ngOnInit() {
     this.__init(this.value);
+    this.dragElementStart.nativeElement.onmousedown = (e) => {
+      this.dragmousedown(e, this.dragElementStart, 1);
+    };
 
-    this.resetButton.nativeElement.addEventListener('click', (e) => {
-      this.resetRange();
-    });
+    this.dragElementEnd.nativeElement.onmousedown = (e) => {
+      this.dragmousedown(e, this.dragElementEnd, 2);
+    };
   }
 }
